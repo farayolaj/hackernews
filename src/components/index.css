@@ -1,0 +1,40 @@
+header {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.table {
+    padding: 10px;
+}
+
+.table .head {
+    font-weight: bold;
+    text-align: center;
+    background-color: black;
+    color: white;
+}
+
+.table div {
+    display: grid;
+    grid-template-columns: 30% 30% 20% 20%;
+    justify-items: center;
+    align-items: center;
+    background-color: rgb(228, 228, 228);
+    margin: 2px;
+}
+
+.search {
+    display: flex;
+    justify-content: center;
+}
+
+.search button {
+    background-color: black;
+    color: white;
+    border: none;
+}
+
+.search *:focus {
+    outline-color: black;
+}
