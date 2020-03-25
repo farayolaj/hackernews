@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect } from 'react';
+import React, { useReducer, useEffect, useState } from 'react';
 import './App.css';
 import Header from './components/Header';
 import Table from './components/Table';
@@ -26,9 +26,11 @@ const items = [
 
 function App() {
   const [ stories, dispatchStories ] = useReducer(storiesReducer, {
-    searchTerm: '',
+    isLoading: true,
+    error: null,
     data: [],
   });
+  const [ searchTerm, setSearchTerm ] = useState('react');
 
   const fetchStories = () => {
     dispatchStories({
@@ -43,7 +45,15 @@ function App() {
   return (
     <>
       <Header />
-      <Search searchTerm={stories.searchTerm}/>
+      <Search 
+        searchTerm={stories.searchTerm} 
+        onSearchChanged={event => setSearchTerm(event.target.value)} 
+        {/*Error most likely here*/}
+        onSearch={dispatchStories({
+          type: 'SET_STORIES',
+          payload: stories.data.filter(item => item.title.toLowercase() === searchTerm.toLowerCase()),
+        })}
+      />
       <hr/>
       <Table data={stories.data} />
     </>
