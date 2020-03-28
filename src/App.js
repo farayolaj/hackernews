@@ -1,60 +1,59 @@
-import React, { useReducer, useEffect, useState } from 'react';
+import React, { useReducer, useEffect, useState, useCallback } from 'react';
 import './App.css';
 import Header from './components/Header';
 import Table from './components/Table';
+import Loading from './components/Loading';
 import Search from './components/Search';
 import { storiesReducer } from './reducers';
+import Axios from 'axios';
 
-const items = [
-  {
-    objectID: 0,
-    title: 'React',
-    url: 'https://reactjs.org',
-    author: 'Jordan Walke',
-    num_comments: 3,
-    points: 4,
-  },
-  {
-    objectID: 1,
-    title: 'Redux',
-    url: 'https://reduxjs.org',
-    author: 'Farayola Victoria',
-    num_comments: 2,
-    points: 5,
-  }
-];
+/* TODO
+* position Loading component well
+* work on 'Something went wrong'
+* work on dynamically sizing the table
+*/
+
+const API_ENDPOINT = 'http://hn.algolia.com/api/v1/search?query=';
 
 function App() {
   const [ stories, dispatchStories ] = useReducer(storiesReducer, {
-    isLoading: true,
-    error: null,
+    isLoading: false,
+    isError: false,
     data: [],
   });
+  
   const [ searchTerm, setSearchTerm ] = useState('react');
+  const [ url, setUrl ] = useState(`${API_ENDPOINT}${searchTerm}`);
 
-  const fetchStories = () => {
-    dispatchStories({
-      type: 'SET_STORIES',
-      payload: items,
-    });
-  };
+  const handleFetchStories = useCallback(() => {
+    if (!searchTerm) return;
 
-  useEffect(fetchStories, []);
+    dispatchStories({ type: 'STORIES_FETCH_INIT' });
 
+    Axios
+      .get(url)
+      .then(result => dispatchStories({
+        type: 'SET_STORIES',
+        payload: result.data.hits,
+      }))
+      .catch(() => dispatchStories({
+        type: 'STORIES_FETCH_ERROR',
+      }));
+  }, [url]);
+
+  useEffect(handleFetchStories, [handleFetchStories]);
 
   return (
     <>
       <Header />
-      <Search 
-        searchTerm={stories.searchTerm} 
-        onSearchChanged={event => setSearchTerm(event.target.value)} 
-        {/*Error most likely here*/}
-        onSearch={dispatchStories({
-          type: 'SET_STORIES',
-          payload: stories.data.filter(item => item.title.toLowercase() === searchTerm.toLowerCase()),
-        })}
+      <Search
+        searchTerm={searchTerm}
+        onInputChanged={event => setSearchTerm(event.target.value)}
+        onSearch={() => setUrl(`${API_ENDPOINT}${searchTerm}`)}
       />
-      <hr/>
+      <hr />
+      {stories.isError && <p>Something went wrong...</p>}
+      {stories.isLoading && <Loading />}
       <Table data={stories.data} />
     </>
   );

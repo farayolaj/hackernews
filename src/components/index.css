@@ -16,12 +16,16 @@ header {
 }
 
 .table div {
+    box-sizing: content-box;
+    height: 2rem;
     display: grid;
     grid-template-columns: 30% 30% 20% 20%;
     justify-items: center;
     align-items: center;
+    text-align: center;
     background-color: rgb(228, 228, 228);
     margin: 2px;
+    padding: 10px 2px;
 }
 
 .search {
@@ -29,12 +33,54 @@ header {
     justify-content: center;
 }
 
+.search input {
+    font-size: large;
+}
+
 .search button {
+    box-sizing: border-box;
     background-color: black;
     color: white;
     border: none;
+    padding: 10px;
+    font-size: large;
 }
 
 .search *:focus {
     outline-color: black;
+}
+
+@keyframes rot {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.svg circle {
+    fill: white;
+    stroke: black;
+    stroke-width: 4;
+    stroke-dasharray: 25;
+    transform-origin: 50% 50%;
+    animation-name: rot;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+.svg .inner {
+    animation-direction: reverse;
 }

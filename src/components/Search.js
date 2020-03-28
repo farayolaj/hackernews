@@ -2,11 +2,11 @@ import React from 'react';
 import './index.css';
 
 // eslint-disable-next-line react/prop-types
-export default function Search({ searchTerm }) {
+export default function Search({ searchTerm, onInputChanged, onSearch }) {
   return (
-    <form className="search">
-      <input type="text" value={searchTerm} />
-      <button onSubmit={(event) => event.preventDefault()}>Search</button>
-    </form>
+    <div className="search">
+      <input type="text" value={searchTerm} onChange={onInputChanged} />
+      <button onClick={onSearch}>Search</button>
+    </div>
   );
 }
