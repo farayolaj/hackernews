@@ -14,7 +14,7 @@ import Axios from 'axios';
 * add a filter menu
 */
 
-const API_ENDPOINT = 'http://hn.algolia.com/api/v1/search?query=';
+const API_ENDPOINT = 'https://hn.algolia.com/api/v1/search?query=';
 
 function App() {
   const [ stories, dispatchStories ] = useReducer(storiesReducer, {
