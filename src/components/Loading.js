@@ -3,7 +3,7 @@ import './index.css';
 
 export default function Loading() {
   return (
-    <div width="100%" height="100%" className="svg">
+    <div className="svg">
       <svg>
         <circle cx="50%" cy="50%" r="25" className="outer"></circle>
         <circle cx="50%" cy="50%" r="15" className="inner"></circle>

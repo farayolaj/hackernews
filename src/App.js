@@ -8,7 +8,6 @@ import { storiesReducer } from './reducers';
 import Axios from 'axios';
 
 /* TODO
-* position Loading component well
 * work on 'Something went wrong'
 * work on dynamically sizing the table
 * add a filter menu
@@ -17,17 +16,17 @@ import Axios from 'axios';
 const API_ENDPOINT = 'https://hn.algolia.com/api/v1/search?query=';
 
 function App() {
-  const [ stories, dispatchStories ] = useReducer(storiesReducer, {
+  const [stories, dispatchStories] = useReducer(storiesReducer, {
     isLoading: false,
     isError: false,
     data: [],
   });
-  
-  const [ searchTerm, setSearchTerm ] = useState('react');
-  const [ url, setUrl ] = useState(`${API_ENDPOINT}${searchTerm}`);
+
+  const [searchTerm, setSearchTerm] = useState('react');
+  const [url, setUrl] = useState(`${API_ENDPOINT}${searchTerm}`);
 
   const handleFetchStories = useCallback(() => {
-    if (!searchTerm) return;
+    if (url === API_ENDPOINT) return;
 
     dispatchStories({ type: 'STORIES_FETCH_INIT' });
 
@@ -46,14 +45,15 @@ function App() {
 
   return (
     <>
-      <Header />
-      <Search
-        searchTerm={searchTerm}
-        onInputChanged={event => setSearchTerm(event.target.value)}
-        onSearch={() => setUrl(`${API_ENDPOINT}${searchTerm}`)}
-      />
-      <hr />
+      <Header>
+        <Search
+          searchTerm={searchTerm}
+          onInputChanged={event => setSearchTerm(event.target.value)}
+          onSearch={() => setUrl(`${API_ENDPOINT}${searchTerm}`)}
+        />
+      </Header>
       {stories.isError && <p>Something went wrong...</p>}
+      {/* <Loading /> */}
       {stories.isLoading && <Loading />}
       <Table data={stories.data} />
     </>
