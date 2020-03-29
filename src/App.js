@@ -11,6 +11,7 @@ import Axios from 'axios';
 * position Loading component well
 * work on 'Something went wrong'
 * work on dynamically sizing the table
+* add a filter menu
 */
 
 const API_ENDPOINT = 'http://hn.algolia.com/api/v1/search?query=';
