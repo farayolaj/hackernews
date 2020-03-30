@@ -9,11 +9,15 @@ import Axios from 'axios';
 
 /* TODO
 * work on 'Something went wrong'
-* work on dynamically sizing the table
 * add a filter menu
 */
 
 const API_ENDPOINT = 'https://hn.algolia.com/api/v1/search?query=';
+const useSemiPersistentState = (key, defValue) => {
+  const [ value, setValue ] = useState(localStorage.getItem(key) || defValue);
+  useEffect(() => localStorage.setItem(key, value), [ value ]);
+  return [ value, setValue ];
+};
 
 function App() {
   const [stories, dispatchStories] = useReducer(storiesReducer, {
@@ -22,7 +26,7 @@ function App() {
     data: [],
   });
 
-  const [searchTerm, setSearchTerm] = useState('react');
+  const [searchTerm, setSearchTerm] = useSemiPersistentState('react');
   const [url, setUrl] = useState(`${API_ENDPOINT}${searchTerm}`);
 
   const handleFetchStories = useCallback(() => {
