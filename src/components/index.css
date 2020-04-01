@@ -90,3 +90,18 @@ header {
 .svg .inner {
     animation-direction: reverse;
 }
+
+.alert {
+    position: relative;
+    left: 50%;
+    margin: 5px;
+    padding: 10px 25px;
+    width: max-content;
+    border-radius: 25px;
+    text-align: center;
+}
+
+.alert .dismiss {
+    position: absolute;
+    left: 90%;
+}

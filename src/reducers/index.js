@@ -16,7 +16,12 @@ const storiesReducer = (state, action) => {
     return {
       ...state,
       isError: true,
-      isLoading: false
+      isLoading: false,
+    };
+  case 'DISMISS_ERROR':
+    return {
+      ...state,
+      isError: false,
     };
   default:
     throw new Error('Action type missing');

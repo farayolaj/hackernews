@@ -6,6 +6,8 @@ import Loading from './components/Loading';
 import Search from './components/Search';
 import { storiesReducer } from './reducers';
 import Axios from 'axios';
+import Alert, { AlertType } from './components/Alert';
+// import SweetAlert from 'sweetalert2-react';
 
 /* TODO
 * work on 'Something went wrong'
@@ -14,9 +16,9 @@ import Axios from 'axios';
 
 const API_ENDPOINT = 'https://hn.algolia.com/api/v1/search?query=';
 const useSemiPersistentState = (key, defValue) => {
-  const [ value, setValue ] = useState(localStorage.getItem(key) || defValue);
-  useEffect(() => localStorage.setItem(key, value), [ value ]);
-  return [ value, setValue ];
+  const [value, setValue] = useState(localStorage.getItem(key) || defValue);
+  useEffect(() => localStorage.setItem(key, value), [value, key]);
+  return [value, setValue];
 };
 
 function App() {
@@ -26,7 +28,7 @@ function App() {
     data: [],
   });
 
-  const [searchTerm, setSearchTerm] = useSemiPersistentState('react');
+  const [searchTerm, setSearchTerm] = useSemiPersistentState('search', 'react');
   const [url, setUrl] = useState(`${API_ENDPOINT}${searchTerm}`);
 
   const handleFetchStories = useCallback(() => {
@@ -56,7 +58,16 @@ function App() {
           onSearch={() => setUrl(`${API_ENDPOINT}${searchTerm}`)}
         />
       </Header>
-      {stories.isError && <p>Something went wrong...</p>}
+      {/* <SweetAlert show={stories.isError} title="Error" text="Something went wrong..."/> */}
+      <Alert
+        type={AlertType.ERROR} 
+        show={stories.isError} 
+        onClose={() => dispatchStories({
+          type: 'DISMISS_ERROR',
+        })}
+      >
+        Something went wrong...
+      </Alert>
       {/* <Loading /> */}
       {stories.isLoading && <Loading />}
       <Table data={stories.data} />
